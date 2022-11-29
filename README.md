@@ -1,1 +1,1 @@
-# mobilbackend
+Záródololgozatom témája: Bevásárlólista
