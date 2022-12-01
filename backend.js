@@ -3,8 +3,19 @@ const mysql = require('mysql')
 const app = express()
 const port = 3000
 const cors = require('cors')
+var connection
 
-app.use(express.static('kepek'))
+function kapcsolat() {
+    connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'bevasarlolista'
+    })
+}
+
+
+
 app.use(express.json())
 app.use(cors())
 
@@ -15,15 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/listak', (req, res) => {
-
-    const connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'bevasarlolista'
-    })
-
-    connection.connect()
+    kapcsolat()
 
     connection.query('SELECT * from listak', (err, rows, fields) => {
         if (err) throw err
@@ -33,6 +36,22 @@ app.get('/listak', (req, res) => {
     })
     connection.end()
 })
+
+app.post('/tartalomfel', (req, res) => {
+    kapcsolat()
+
+    connection.query('INSERT INTO `listak` VALUES (NULL, "' + req.body.bevitel1 + '",CURDATE(), "' + req.body.bevitel2 + '");', function (err, rows, fields) {
+        if (err)
+            console.log(err)
+        else {
+            console.log(rows)
+            res.send(rows)
+        }
+    })
+    connection.end()
+
+})
+
 
 
 app.listen(port, () => {
