@@ -1,16 +1,16 @@
 const express = require('express')
 const mysql = require('mysql')
 const app = express()
-const port = 24003
+const port = 3000
 const cors = require('cors')
 var connection
 
 function kapcsolat() {
     connection = mysql.createConnection({
-        host: '192.168.0.200',
-        user: 'u61_8weC7VZ9A0',
-        password: 'gfkdWtuh+Ai5V=hUL^ZUJ3Ug',
-        database: 's61_db'
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'bevasarlolista'
     })
 }
 
@@ -51,6 +51,20 @@ app.post('/tartalomfel', (req, res) => {
     connection.end()
 
 })
+
+app.get('/aktualis', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT * FROM `listak` WHERE listak_datum > CURRENT_DATE();', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
+
 
 
 
