@@ -52,6 +52,24 @@ app.post('/tartalomfel', (req, res) => {
 
 })
 
+app.post('/arfel', (req, res) => {
+    kapcsolat()
+
+    connection.query('UPDATE `listak` SET `listak_ar`= "' + req.body.bevitel4 + '" WHERE listak_tartalom = "' + req.body.bevitel3 + '"', function (err, rows, fields) {
+        if (err)
+            console.log(err)
+        else {
+            console.log(rows)
+            res.send(rows)
+        }
+    })
+    connection.end()
+
+})
+
+
+
+
 app.get('/aktualis', (req, res) => {
     kapcsolat()
 
@@ -63,9 +81,6 @@ app.get('/aktualis', (req, res) => {
     })
     connection.end()
 })
-
-
-
 
 
 app.listen(port, () => {
