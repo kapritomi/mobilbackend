@@ -14,12 +14,8 @@ function kapcsolat() {
     })
 }
 
-
-
 app.use(express.json())
 app.use(cors())
-
-
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -51,6 +47,23 @@ app.post('/tartalomfel', (req, res) => {
     connection.end()
 
 })
+
+
+app.delete('/regilistatorles', (req, res) => {
+    kapcsolat()
+
+    connection.query('DELETE FROM `listak` WHERE listak_datum < (SELECT CURDATE() - INTERVAL 3 MONTH FROM `listak` LIMIT 1);',(err, rows, fields)=> {
+        if (err)
+            console.log(err)
+        else {
+            console.log(rows)
+            res.send(rows)
+        }
+    })
+    connection.end()
+
+})
+
 
 app.post('/arfel', (req, res) => {
     kapcsolat()
