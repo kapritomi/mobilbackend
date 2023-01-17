@@ -33,6 +33,18 @@ app.get('/listak', (req, res) => {
     connection.end()
 })
 
+app.get('/honapok', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT MONTHNAME(listak_datum) AS value, SUM(listak_ar) AS label FROM `listak` GROUP BY YEAR(listak_datum), MONTH(listak_datum);', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
 app.post('/tartalomfel', (req, res) => {
     kapcsolat()
 
