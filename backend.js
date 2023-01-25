@@ -36,7 +36,7 @@ app.get('/listak', (req, res) => {
 app.get('/honapok', (req, res) => {
     kapcsolat()
 
-    connection.query('SELECT MONTHNAME(listak_datum) AS value, SUM(listak_ar) AS label FROM `listak` GROUP BY YEAR(listak_datum), MONTH(listak_datum);', (err, rows, fields) => {
+    connection.query('SELECT MONTHNAME(listak_datum) AS honap, SUM(listak_ar) AS ar FROM `listak` GROUP BY YEAR(listak_datum), MONTH(listak_datum);', (err, rows, fields) => {
         if (err) throw err
 
 
@@ -60,7 +60,6 @@ app.post('/tartalomfel', (req, res) => {
 
 })
 
-
 app.delete('/regilistatorles', (req, res) => {
     kapcsolat()
 
@@ -76,11 +75,10 @@ app.delete('/regilistatorles', (req, res) => {
 
 })
 
-
-app.post('/arfel', (req, res) => {
+app.delete('/listatorles', (req, res) => {
     kapcsolat()
 
-    connection.query('UPDATE `listak` SET `listak_ar`= "' + req.body.bevitel4 + '" WHERE listak_tartalom = "' + req.body.bevitel3 + '"', function (err, rows, fields) {
+    connection.query('DELETE FROM `listak` WHERE listak_id = "'+req.body.bevitel5+'"',(err, rows, fields)=> {
         if (err)
             console.log(err)
         else {
@@ -92,8 +90,20 @@ app.post('/arfel', (req, res) => {
 
 })
 
+app.post('/arfel', (req, res) => {
+    kapcsolat()
 
+    connection.query('UPDATE `listak` SET `listak_ar`= "' + req.body.bevitel3 + '" WHERE listak_id = "' + req.body.bevitel4 + '"', function (err, rows, fields) {
+        if (err)
+            console.log(err)
+        else {
+            console.log(rows)
+            res.send(rows)
+        }
+    })
+    connection.end()
 
+})
 
 app.get('/aktualis', (req, res) => {
     kapcsolat()
@@ -106,7 +116,6 @@ app.get('/aktualis', (req, res) => {
     })
     connection.end()
 })
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
