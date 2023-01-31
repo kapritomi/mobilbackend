@@ -63,7 +63,7 @@ app.post('/tartalomfel', (req, res) => {
 app.delete('/regilistatorles', (req, res) => {
     kapcsolat()
 
-    connection.query('DELETE FROM `listak` WHERE listak_datum < (SELECT CURDATE() - INTERVAL 3 MONTH FROM `listak` LIMIT 1);',(err, rows, fields)=> {
+    connection.query('DELETE FROM `listak` WHERE listak_datum < (SELECT CURDATE() - INTERVAL 3 MONTH FROM `listak` LIMIT 1);', (err, rows, fields) => {
         if (err)
             console.log(err)
         else {
@@ -78,7 +78,7 @@ app.delete('/regilistatorles', (req, res) => {
 app.delete('/listatorles', (req, res) => {
     kapcsolat()
 
-    connection.query('DELETE FROM `listak` WHERE listak_id = "'+req.body.bevitel5+'"',(err, rows, fields)=> {
+    connection.query('DELETE FROM `listak` WHERE listak_id = "' + req.body.bevitel5 + '"', (err, rows, fields) => {
         if (err)
             console.log(err)
         else {
@@ -115,6 +115,22 @@ app.get('/aktualis', (req, res) => {
         res.send(rows)
     })
     connection.end()
+})
+
+app.post('/felhasznaloossz', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT count(listak_nev) as osszes  FROM `listak` WHERE `letrehozofelhasznalo` = "' + req.body.bevitel1 + '";', function (err, rows, fields) {
+        if (err)
+            console.log(err)
+        else {
+            console.log(rows[0])
+            res.send(rows)
+
+        }
+    })
+    connection.end()
+
 })
 
 app.listen(port, () => {
