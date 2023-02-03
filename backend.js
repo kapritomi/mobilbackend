@@ -33,6 +33,30 @@ app.get('/listak', (req, res) => {
     connection.end()
 })
 
+app.get('/listakrendezve', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT * from listak order by listak_ar ASC', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
+app.get('/listakrendezve1', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT * from listak order by listak_ar DESC', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
 app.get('/honapok', (req, res) => {
     kapcsolat()
 
