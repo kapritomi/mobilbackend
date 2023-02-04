@@ -33,7 +33,7 @@ app.get('/listak', (req, res) => {
     connection.end()
 })
 
-app.get('/listakrendezve', (req, res) => {
+app.get('/listakarszerintnov', (req, res) => {
     kapcsolat()
 
     connection.query('SELECT * from listak order by listak_ar ASC', (err, rows, fields) => {
@@ -45,7 +45,7 @@ app.get('/listakrendezve', (req, res) => {
     connection.end()
 })
 
-app.get('/listakrendezve1', (req, res) => {
+app.get('/listakarszerintcsokk', (req, res) => {
     kapcsolat()
 
     connection.query('SELECT * from listak order by listak_ar DESC', (err, rows, fields) => {
@@ -56,6 +56,31 @@ app.get('/listakrendezve1', (req, res) => {
     })
     connection.end()
 })
+
+app.get('/listakdatumszerintnov', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT * from listak order by listak_datum ASC', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
+app.get('/listakdatumszerintcsokk', (req, res) => {
+    kapcsolat()
+
+    connection.query('SELECT * from listak order by listak_datum DESC', (err, rows, fields) => {
+        if (err) throw err
+
+
+        res.send(rows)
+    })
+    connection.end()
+})
+
 
 app.get('/honapok', (req, res) => {
     kapcsolat()
